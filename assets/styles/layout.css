@@ -1,0 +1,124 @@
+body, header, footer {
+    font-family: "Lexend Deca", serif;
+}
+
+body {
+    align-items: center;
+}
+
+header, footer {
+    align-content: center;
+    justify-content: center;
+    padding: 1vh 1vw;
+    display: flex;
+    width: 100%;
+    background-color: darkgray;
+}
+
+header {
+    margin: 0 0 10vh;
+}
+
+footer {
+    margin: 10vh 0 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    background-color: lightgray;
+}
+
+.mainDiv {
+    display: flex;
+    flex-direction: column;
+}
+
+.fileFormDiv {
+    display: flex;
+    border: 2px solid black;
+    border-radius: 8px;
+    margin: 1rem;
+}
+
+.fileFormDiv > form {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    padding: 1rem;
+}
+
+.fileFormDiv > form input {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.fileFormDiv > form label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    border: 2px solid black;
+    border-radius: 8px;
+    margin: 0.5rem;
+    height: auto;
+    width: 13rem;
+}
+
+.fileFormDiv > form label.hidden {
+    display: none;
+    visibility: hidden;
+}
+
+.fileFormDiv > form label.submitLabel {
+    width: 100%;
+}
+
+.fileFormDiv > form label:hover {
+    cursor: pointer;
+    background-color: darkgray;
+}
+
+.fileFormDiv > form div.labelDiv {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+}
+
+.fileFormDiv > form div.labelDiv > div {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.fileFormDiv > form div.labelDiv > div .filenameDiv {
+    width: 50%;
+}
+
+.fileFormDiv > form div.labelDiv > .removeLabel {
+    width: 5%;
+}
+
+.error {
+    color: darkred;
+}
+
+.success {
+    color: darkgreen;
+}
+
+.hidden {
+    display: none;
+}
+
+form p.error:before {
+    content: "\26A0";
+    margin-right: 6px;
+}
