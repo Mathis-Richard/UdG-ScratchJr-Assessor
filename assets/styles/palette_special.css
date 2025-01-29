@@ -1,0 +1,19 @@
+:root {
+    --darkest: #3373cc;
+    --dark: #3a80e7;
+    --regular: #488ef0;
+    --light: #7da6e1;
+    --lighter: #c7eafb;
+
+    --darkest-alt: #d36a10;
+    --dark-alt: #e97e00;
+    --regular-alt: #f9a737;
+    --light-alt: #e8b369;
+    --lighter-alt: #efe6d1;
+
+    --normal-text: #ffffff;
+
+    --success: #5EB234;
+    --error: #C91D2B;
+    --warning: #E8B130;
+}

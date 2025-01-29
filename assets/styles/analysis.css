@@ -1,4 +1,10 @@
-.projectthumbnail {
-    width: 500px;
-    height: auto;
+.projectThumbnail {
+    max-height: 20vh;
+}
+
+.mainDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }

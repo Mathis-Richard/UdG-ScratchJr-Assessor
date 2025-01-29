@@ -2,9 +2,11 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>TallerScratchJr - Your ScratchJr Tools</title>
+    <title>TallerScratchJr - Your ScratchJr Workshop</title>
+    <link rel="stylesheet" href="/assets/styles/palette_special.css">
     <link rel="stylesheet" href="/assets/styles/layout.css">
     <link rel="stylesheet" href="/assets/styles/input.css">
+    <link rel="stylesheet" href="/assets/styles/rubric.css">
     <?php if(isset($style)) echo '<link rel="stylesheet" href="/assets/styles/'.$style.'.css">'; ?>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

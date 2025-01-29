@@ -1,9 +1,11 @@
-body, header, footer {
-    font-family: "Lexend Deca", serif;
+#headerLogo {
+    max-height: 20vh;
+    padding: 1vw 1vh;
+    cursor: pointer;
 }
 
-body {
-    align-items: center;
+body, header, footer {
+    font-family: "Lexend Deca", serif;
 }
 
 header, footer {
@@ -12,7 +14,7 @@ header, footer {
     padding: 1vh 1vw;
     display: flex;
     width: 100%;
-    background-color: darkgray;
+    background-color: var(--darkest);
 }
 
 header {
@@ -26,12 +28,29 @@ footer {
 body {
     display: flex;
     flex-direction: column;
-    background-color: lightgray;
+    align-items: center;
+    background-color: var(--dark);
+    color: var(--normal-text);
 }
 
 .mainDiv {
     display: flex;
     flex-direction: column;
+    width: 80%;
+    padding: 0vh 3vw;
+}
+
+.twoProjectsDiv {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.twoProjectsDiv .projectOneDiv, .twoProjectsDiv .projectTwoDiv {
+    display: flex;
+    flex-direction: column;
+    padding: 2em;
+    width: 50%;
 }
 
 .fileFormDiv {
@@ -107,15 +126,21 @@ body {
 }
 
 .error {
-    color: darkred;
+    color: var(--error);
 }
 
 .success {
-    color: darkgreen;
+    color: var(--success);
 }
 
 .hidden {
     display: none;
+}
+
+.dataDiv > .imageDiv {
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }
 
 form p.error:before {

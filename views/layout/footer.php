@@ -1,3 +1,3 @@
 <footer>
-    <div>Footer</div>
+    <div>Made in Girona</div>
 </footer>

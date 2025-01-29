@@ -7,7 +7,7 @@ const BLOCKS =
     "purple_looks" => ['say', 'space', 'grow', 'shrink', 'same', 'space', 'hide', 'show'],
     "green_sound" => ['playusersnd'],
     "orange_control" => ['wait', 'stopmine', 'setspeed', 'repeat'],
-    "red_end" => ['endstack', 'forever']
+    "red_end" => ['endstack', 'forever', 'gotopage']
 ];
 
 

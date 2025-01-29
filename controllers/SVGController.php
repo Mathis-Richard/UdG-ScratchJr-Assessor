@@ -46,7 +46,7 @@ class SVGController
             unlink($destinationPath);
 
         } else {
-            var_dump("Raté!");
+
         }
     }
 }

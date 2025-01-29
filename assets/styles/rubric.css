@@ -1,0 +1,218 @@
+.rubricDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.rubricTable {
+    font-family: "Lexend Deca", sans-serif;
+    font-size: 1rem;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.tableHead, .tableFoot {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.tableBody {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.tableRow {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    min-height: 2rem;
+}
+
+.tableHeadTitle {
+    display: flex;
+    justify-content: center;
+    font-weight: bolder;
+    min-height: 2rem;
+    width: 100%;
+}
+
+.tableHeadTitle, .tableFootTitle {
+    background-color: var(--darkest-alt);
+}
+
+.tableRowTitle, .tableFootTitle {
+    display: flex;
+    width: 40%;
+    padding: 0.5vw;
+    align-items: center;
+}
+
+.tableRowContent, .tableFootContent {
+    font-weight: bold;
+    display: flex;
+    flex-direction: row;
+    width: 60%;
+    text-align: center;
+}
+
+.tableFootContent {
+    font-weight: bold;
+}
+
+.tableRowContent > .tableRowContentCell {
+    width: 100%;
+}
+
+.tableFootContent > .tableRowContentCell {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    background-color: var(--regular-alt);
+}
+
+.tableFootContent > .tableRowContentCell > div {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+}
+
+.tableFootContent > .tableRowContentCell > div > p {
+    padding: 0 0.2vw;
+}
+
+.tableBody .tableRow div.tableRowContentCell.pointsZero {
+    color: red;
+    cursor: pointer;
+    -webkit-transition: all 0.1s linear;
+    -moz-transition: all 0.1s linear;
+    -o-transition: all 0.1s linear;
+    transition: all 0.1s linear;
+}
+
+.tableBody .tableRow div.tableRowContentCell.pointsOne {
+    color: orange;
+    cursor: pointer;
+    -webkit-transition: all 0.1s linear;
+    -moz-transition: all 0.1s linear;
+    -o-transition: all 0.1s linear;
+    transition: all 0.1s linear;
+}
+
+.tableBody .tableRow div.tableRowContentCell.pointsTwo {
+    color: yellow;
+    cursor: pointer;
+    -webkit-transition: all 0.1s linear;
+    -moz-transition: all 0.1s linear;
+    -o-transition: all 0.1s linear;
+    transition: all 0.1s linear;
+}
+
+.tableBody .tableRow div.tableRowContentCell.pointsThree {
+    color: greenyellow;
+    cursor: pointer;
+    -webkit-transition: all 0.1s linear;
+    -moz-transition: all 0.1s linear;
+    -o-transition: all 0.1s linear;
+    transition: all 0.1s linear;
+}
+
+.tableBody .tableRow div.tableRowContentCell.pointsFour {
+    color: green;
+    cursor: pointer;
+    -webkit-transition: all 0.1s linear;
+    -moz-transition: all 0.1s linear;
+    -o-transition: all 0.1s linear;
+    transition: all 0.1s linear;
+}
+
+.tableBody .tableRow div.tableRowContentCell.pointsZero.selected {
+    color: black;
+    background-color: red;
+    cursor: initial;
+    -webkit-transition: all 0.1s linear;
+    -moz-transition: all 0.1s linear;
+    -o-transition: all 0.1s linear;
+    transition: all 0.1s linear;
+}
+
+.tableBody .tableRow div.tableRowContentCell.pointsOne.selected {
+    color: black;
+    background-color: orange;
+    cursor: initial;
+    -webkit-transition: all 0.1s linear;
+    -moz-transition: all 0.1s linear;
+    -o-transition: all 0.1s linear;
+    transition: all 0.1s linear;
+}
+
+.tableBody .tableRow div.tableRowContentCell.pointsTwo.selected {
+    color: black;
+    background-color: yellow;
+    cursor: initial;
+    -webkit-transition: all 0.1s linear;
+    -moz-transition: all 0.1s linear;
+    -o-transition: all 0.1s linear;
+    transition: all 0.1s linear;
+}
+
+.tableBody .tableRow div.tableRowContentCell.pointsThree.selected {
+    color: black;
+    background-color: greenyellow;
+    cursor: initial;
+    -webkit-transition: all 0.1s linear;
+    -moz-transition: all 0.1s linear;
+    -o-transition: all 0.1s linear;
+    transition: all 0.1s linear;
+}
+
+.tableBody .tableRow div.tableRowContentCell.pointsFour.selected {
+    color: black;
+    background-color: green;
+    cursor: initial;
+    -webkit-transition: all 0.1s linear;
+    -moz-transition: all 0.1s linear;
+    -o-transition: all 0.1s linear;
+    transition: all 0.1s linear;
+}
+
+
+.rubricTable, .tableHead, .tableBody, .tableRow, .tableHeadTitle, .tableRowTitle, .tableFootTitle, .tableFootContent, .tableRowContent, .tableRowContentCell {
+    border: 1px solid #1c1c1c;
+    box-sizing: border-box;
+    color: #000000;
+}
+
+.tableRowContentCell {
+    padding: 0.5rem;
+    text-align: center;
+}
+
+.tableHeadTitle {
+    padding: 0.5rem;
+    text-align: center;
+}
+
+.tableBody .tableRow:nth-of-type(odd) .tableRowTitle, .tableBody .tableRow:nth-of-type(odd) .tableRowContentCell{
+    background-color: darkgray;
+}
+
+.tableBody .tableRow:nth-of-type(even) .tableRowTitle, .tableBody .tableRow:nth-of-type(even) .tableRowContentCell{
+    background-color: gray;
+}
+
+.tableFoot .tableRow {
+    font-weight: bolder;
+}
+
+.tableFoot .tableFootTitle {
+    text-transform: uppercase;
+}
+
+.tableFoot .tableRowContentCell {
+    background-color: var(--regular-alt);
+}
