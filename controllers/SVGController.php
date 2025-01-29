@@ -7,7 +7,7 @@ class SVGController
     static $style = "svg";
 
     static $path = ROOT . "/assets/temp/svg/";
-    static $template = ROOT . "/assets/temp/ProjectTemplate.zip";
+    static $template = ROOT . "/assets/ProjectTemplate.zip";
 
     public function main()
     {
