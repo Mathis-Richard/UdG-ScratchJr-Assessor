@@ -1,4 +1,12 @@
 $(function () {
+
+    function formatFileSize(bytes) {
+        const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+        if (bytes === 0) return '0 Byte';
+        const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10);
+        return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+    }
+
     let soloFile = $("#soloFile")
     let duoFileOne = $("#duoFileOne")
     let duoFileTwo = $("#duoFileTwo")
@@ -46,6 +54,17 @@ $(function () {
             });
             pUploadSoloError.text(file.name + " is not a .sjr file !")
             formDataSolo.remove("file", file)
+        } else if (file && file.size > 50 * 1024 * 1024) {
+            soloFile.val(null)
+            labelDivSolo.remove()
+            pUploadSolo.remove();
+            $("#soloForm #filenameDivSolo").append(pUploadSoloError);
+            $("#soloForm #labelDivSoloFile").append(labelDeleteSolo);
+            labelDeleteSolo.click(() => {
+                resetSolo()
+            });
+            pUploadSoloError.text(file.name + " is too big ! (" + formatFileSize(file.size) + ")")
+            formDataSolo.remove("file", file)
         } else {
             pUploadSoloError.remove();
             $("#soloForm").append(labelDivSolo);
@@ -54,7 +73,7 @@ $(function () {
             labelDeleteSolo.click(() => {
                 resetSolo()
             });
-            pUploadSolo.text(file.name + " (" + file.size + " bytes)")
+            pUploadSolo.text(file.name + " (" + formatFileSize(file.size) + ")")
             formDataSolo.append("file", file)
         }
 
@@ -108,6 +127,17 @@ $(function () {
             });
             pUploadDuoOneError.text(file.name + " is not a .sjr file !")
             formDataDuo.remove("fileOne", file)
+        } else if (file && file.size > 50 * 1024 * 1024) {
+            duoFileOne.val(null)
+            labelDivDuo.remove()
+            pUploadDuoOne.remove();
+            $("#duoForm #labelDivDuoOne #filenameDivDuoOne").append(pUploadDuoOneError);
+            $("#duoForm #labelDivDuoOne").append(labelDeleteDuoOne);
+            labelDeleteDuoOne.click(() => {
+                resetDuoOne()
+            });
+            pUploadDuoOneError.text(file.name + " is too big ! (" + formatFileSize(file.size) + ")")
+            formDataDuo.remove("fileOne", file)
         } else {
             pUploadDuoOneError.remove();
             if (duoFileTwo.val().length > 0) $("#duoForm").append(labelDivDuo)
@@ -138,6 +168,17 @@ $(function () {
             });
             pUploadDuoTwoError.text(file.name + " is not a .sjr file !")
             formDataDuo.remove("fileTwo", file)
+        } else if (file && file.size > 50 * 1024 * 1024) {
+            duoFileTwo.val(null)
+            labelDivDuo.remove()
+            pUploadDuoTwo.remove();
+            $("#duoForm #labelDivDuoTwo #filenameDivDuoTwo").append(pUploadDuoTwoError);
+            $("#duoForm #labelDivDuoTwo").append(labelDeleteDuoTwo);
+            labelDeleteDuoTwo.click(() => {
+                resetDuoTwo()
+            });
+            pUploadDuoTwoError.text(file.name + " is too big ! (" + formatFileSize(file.size) + ")")
+            formDataDuo.remove("fileTwo", file)
         } else {
             pUploadDuoTwoError.remove();
             if (duoFileOne.val().length > 0) $("#duoForm").append(labelDivDuo)
@@ -155,7 +196,7 @@ $(function () {
         id: "submitLabelSvg",
         for: "submitSvgFile",
         class: "submitLabel"
-    }).text("Upload");
+    }).text("Generate and download .sjr");
     let labelDivSvg = $("<div>", {id: "labelDivSvg", class: "labelDiv"});
     let pUploadSvg = $("<p>")
     let pUploadSvgError = $("<p>", {class: "error"})
@@ -173,34 +214,46 @@ $(function () {
     }
 
     svgFile.on("change", () => {
-        if (!svgFile[0].files.length) {
-            resetSvg()
-        }
-        let file = svgFile[0].files[0];
-        if (file && file.name.split(".").pop() !== "svg") {
-            soloFile.val(null)
-            labelDivSvg.remove()
-            pUploadSvg.remove();
-            $("#svgForm #filenameDivSvg").append(pUploadSvgError);
-            $("#svgForm #labelDivSvgFile").append(labelDeleteSvg);
-            labelDeleteSvg.click(() => {
+            if (!svgFile[0].files.length) {
                 resetSvg()
-            });
-            pUploadSvgError.text(file.name + " is not a .svg file !")
-            formDataSvg.remove("fileSvg", file)
-        } else {
-            pUploadSvgError.remove();
-            $("#svgForm").append(labelDivSvg);
-            $("#svgForm #filenameDivSvg").append(pUploadSvg);
-            $("#svgForm #labelDivSvgFile").append(labelDeleteSvg);
-            labelDeleteSvg.click(() => {
-                resetSvg()
-            });
-            pUploadSvg.text(file.name + " (" + file.size + " bytes)")
-            formDataSvg.append("fileSvg", file)
-        }
+            }
+            let file = svgFile[0].files[0];
+            if (file && file.name.split(".").pop() !== "svg") {
+                soloFile.val(null)
+                labelDivSvg.remove()
+                pUploadSvg.remove();
+                $("#svgForm #filenameDivSvg").append(pUploadSvgError);
+                $("#svgForm #labelDivSvgFile").append(labelDeleteSvg);
+                labelDeleteSvg.click(() => {
+                    resetSvg()
+                });
+                pUploadSvgError.text(file.name + " is not a .svg file !")
+                formDataSvg.remove("fileSvg", file)
+            } else if (file && file.size > 50 * 1024 * 1024) {
+                svgFile.val(null)
+                labelDivSvg.remove()
+                pUploadSvg.remove();
+                $("#svgForm #filenameDivSvg").append(pUploadSvgError);
+                $("#svgForm #labelDivSvgFile").append(labelDeleteSvg);
+                labelDeleteSvg.click(() => {
+                    resetSvg()
+                });
+                pUploadSvgError.text(file.name + " is too big ! (" + formatFileSize(file.size) + ")")
+                formDataSvg.remove("file", file)
+            } else {
+                pUploadSvgError.remove();
+                $("#svgForm").append(labelDivSvg);
+                $("#svgForm #filenameDivSvg").append(pUploadSvg);
+                $("#svgForm #labelDivSvgFile").append(labelDeleteSvg);
+                labelDeleteSvg.click(() => {
+                    resetSvg()
+                });
+                pUploadSvg.text(file.name + " (" + formatFileSize(file.size) + ")")
+                formDataSvg.append("fileSvg", file)
+            }
 
-    })
+        }
+    )
 
     let isSJRFormSubmitted = false;
     let isSVGFormSubmitted = false;

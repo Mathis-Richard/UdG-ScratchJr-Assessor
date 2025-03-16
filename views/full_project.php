@@ -8,5 +8,6 @@
 </div>
 <div class="rubricDiv">
     <p><i>N.B: Not all categories can be estimated by algorithms, so you can override any mark you don't agree with.</i></p>
+    <p>Progress is still being made with these algorithms, thanks for your patience!</p>
     <?php require ROOT . "/views/layout/rubric.php"; ?>
 </div>

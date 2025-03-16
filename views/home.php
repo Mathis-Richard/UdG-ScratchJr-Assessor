@@ -11,7 +11,7 @@
         <form id="soloForm" class="sjrForm" action="analysis" method="post" enctype="multipart/form-data">
             <div>
                 <div><h3>Review a single project's properties.</h3></div>
-                <div><p><u>Upload one <b>.sjr</b> file:</u></p></div>
+                <div><p><u>Upload one <b>.sjr</b> file</u> <i>(Max filesize 50 MB)</i></p></div>
             </div>
             <div class="inputDiv">
                 <input type="file" name="soloFile" id="soloFile" accept=".sjr" />
@@ -32,7 +32,7 @@
         <form id="duoForm" class="sjrForm" action="analysis" method="post" enctype="multipart/form-data">
             <div>
                 <div><h3>Compare two versions of the same project or two independent projects.</h3></div>
-                <div><p><u>Upload two <b>.sjr</b> files:</u></p></div>
+                <div><p><u>Upload two <b>.sjr</b> files</u> <i>(Max filesize 50 MB)</i></p></div>
             </div>
             <div class="inputDiv">
                 <input type="file" name="duoFileOne" id="duoFileOne" accept=".sjr">
@@ -66,7 +66,7 @@
         <form id="svgForm" class="svgForm" action="svg" method="post" enctype="multipart/form-data">
             <div>
                 <div><h3>Choose the vector you want to create a project for.</h3></div>
-                <div><p><u>Upload one <b>.svg</b> file:</u></p></div>
+                <div><p><u>Upload one <b>.svg</b> file</u> <i>(Max filesize 50 MB)</i></p></div>
             </div>
             <div class="inputDiv">
                 <input type="file" name="svgFile" id="svgFile" accept=".svg" />

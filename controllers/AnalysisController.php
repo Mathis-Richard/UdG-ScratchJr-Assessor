@@ -19,13 +19,19 @@ class AnalysisController
             switch (sizeof($_FILES)) {
                 case 1:
                     $view = self::$view . "_solo";
-                    $json[] = $this->checkSolo($_FILES["soloFile"]);
-                    echo "<script>let data =".json_encode($json[0])."</script>";
+                    if((isset($_SESSION["content"]) && $_SESSION["content"] == null) || !isset($_SESSION["content"])) {
+                        $_SESSION["content"] = $this->checkSolo($_FILES["soloFile"]);
+                    }
+                    $json[] = $_SESSION["content"];
+                    echo "<script>let data =" . json_encode($json[0]) . "</script>";
                     require_once ROOT . "/views/layout/skeleton.php";
                     return;
                 case 2:
                     $view = self::$view . "_duo";
-                    $json = $this->checkDuo($_FILES["duoFileOne"], $_FILES["duoFileTwo"]);
+                    if((isset($_SESSION["content"]) && $_SESSION["content"] == null) || !isset($_SESSION["content"])) {
+                        $_SESSION["content"] = $this->checkDuo($_FILES["duoFileOne"], $_FILES["duoFileTwo"]);
+                    }
+                    $json = $_SESSION["content"];
                     echo "<script>
                         let dataA =" . json_encode($json[0]) . "
                         let dataB =" . json_encode($json[1]) . "
@@ -60,10 +66,12 @@ class AnalysisController
                     $json["content"] = json_decode(file_get_contents($extractPath . "/project/data.json"), true);
                     $json["scoring"] = self::calculateRubricScore($json["content"]);
                 }
-                unlink($destinationPath);
 
                 $json["extra"]["thumbnailFormat"] = mime_content_type($extractPath . "/project/thumbnails/" . $json["content"]["thumbnail"]["md5"]);
                 $json["extra"]["thumbnailEncoded"] = base64_encode(file_get_contents($extractPath . "/project/thumbnails/" . $json["content"]["thumbnail"]["md5"]));
+
+                unlink($destinationPath);
+                self::rrmdir($extractPath);
 
                 return $json;
             }
@@ -71,11 +79,24 @@ class AnalysisController
     }
 
     private
-    function checkDuo($fileOne,$fileTwo)
+    function checkDuo($fileOne, $fileTwo)
     {
         $outOne = self::checkSolo($fileOne);
         $outTwo = self::checkSolo($fileTwo);
-        return [$outOne,$outTwo];
+        return [$outOne, $outTwo];
+    }
+
+    private static function rrmdir($dir)
+    {
+        if (is_dir($dir)) {
+            $objects = scandir($dir);
+            foreach ($objects as $object) {
+                if ($object != "." && $object != "..") {
+                    if (filetype($dir . "/" . $object) == "dir") self::rrmdir($dir . "/" . $object); else unlink($dir . "/" . $object);
+                }
+            }
+            rmdir($dir);
+        }
     }
 
     private
@@ -97,6 +118,7 @@ class AnalysisController
         $out["finalScore"] = $tempFinalScore;
         return $out;
     }
+
     private static function getAllBlocksOnSprite($sprite)
     {
         $out = [];
@@ -141,8 +163,6 @@ class AnalysisController
         }
         return null;
     }
-
-
 
 
     private

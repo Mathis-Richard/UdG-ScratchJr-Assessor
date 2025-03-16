@@ -19,8 +19,7 @@ class SVGController
         //require_once ROOT . "/views/layout/skeleton.php";
     }
 
-    private
-    function generateProject()
+    private function generateProject()
     {
         $zip = new ZipArchive;
         $file = $_FILES['svgFile'];
@@ -45,8 +44,28 @@ class SVGController
             }
             unlink($destinationPath);
 
-        } else {
+            // Set headers to force download
+            header('Content-Type: application/zip');
+            header('Content-Disposition: attachment; filename="' . basename($spriteName.".sjr") . '"');
+            header('Content-Length: ' . filesize($extractPath));
+            readfile($extractPath);
+            unlink($extractPath); // Delete the file after download
+            exit;
+        }
+    }
 
+
+    private
+    static function rrmdir($dir)
+    {
+        if (is_dir($dir)) {
+            $objects = scandir($dir);
+            foreach ($objects as $object) {
+                if ($object != "." && $object != "..") {
+                    if (filetype($dir . "/" . $object) == "dir") self::rrmdir($dir . "/" . $object); else unlink($dir . "/" . $object);
+                }
+            }
+            rmdir($dir);
         }
     }
 }

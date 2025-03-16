@@ -1,5 +1,6 @@
 <?php
 define('ROOT', $_SERVER['DOCUMENT_ROOT']);
+session_start();
 const BLOCKS =
 [
     "yellow_start" => ['onflag', 'onclick', 'ontouch', 'onmessage', 'message'],
