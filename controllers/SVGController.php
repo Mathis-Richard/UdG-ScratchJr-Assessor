@@ -28,9 +28,9 @@ class SVGController
         if (isset($file)) {
             $destinationFile = explode(".", $file["tmp_name"])[0] . "-" . $file["name"];
             $destinationPath = self::$path . basename($destinationFile);
+            $extractPath = explode(".", $destinationPath)[0] . ".zip";
 
             if (move_uploaded_file($file["tmp_name"], $destinationPath)) {
-                $extractPath = explode(".", $destinationPath)[0] . ".zip";
                 if (copy(self::$template, $extractPath)) {
                     if ($zip->open($extractPath)) {
                         $zip->addFile($destinationPath, "project/characters/" . $file["name"]);
@@ -44,12 +44,11 @@ class SVGController
             }
             unlink($destinationPath);
 
-            // Set headers to force download
             header('Content-Type: application/zip');
-            header('Content-Disposition: attachment; filename="' . basename($spriteName.".sjr") . '"');
+            header('Content-Disposition: attachment; filename="' . $spriteName.".sjr" . '"');
             header('Content-Length: ' . filesize($extractPath));
             readfile($extractPath);
-            unlink($extractPath); // Delete the file after download
+            unlink($extractPath);
             exit;
         }
     }
