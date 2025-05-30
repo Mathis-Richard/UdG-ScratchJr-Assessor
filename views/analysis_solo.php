@@ -1,7 +1,12 @@
+<div class="preMainDiv">
+    <div id="breadcrumb"><a href="/">Home</a> / Solo Project Overview</div>
+    <h1><u>Solo Project Overview</u></h1>
+</div>
 <div class="mainDiv">
-    <h1><u>Single project overview</u></h1>
+    <?php require ROOT . "/views/layout/rubric_instructions.php"?>
     <?php
-        $index = 0;
-        require_once ROOT . "/views/full_project.php";
+    $index = 0;
+    $mode = 1;
+    require_once ROOT . "/views/full_project.php";
     ?>
 </div>

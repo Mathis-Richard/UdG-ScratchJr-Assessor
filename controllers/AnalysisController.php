@@ -5,8 +5,9 @@ class AnalysisController
 
     static $view = "analysis";
     static $style = "analysis";
-
     static $path = ROOT . "/assets/temp/rubric/";
+
+    static $svgSpriteHashes;
 
     public function main()
     {
@@ -19,7 +20,7 @@ class AnalysisController
             switch (sizeof($_FILES)) {
                 case 1:
                     $view = self::$view . "_solo";
-                    if((isset($_SESSION["content"]) && $_SESSION["content"] == null) || !isset($_SESSION["content"])) {
+                    if ((isset($_SESSION["content"]) && $_SESSION["content"] == null) || !isset($_SESSION["content"])) {
                         $_SESSION["content"] = $this->checkSolo($_FILES["soloFile"]);
                     }
                     $json[] = $_SESSION["content"];
@@ -28,7 +29,7 @@ class AnalysisController
                     return;
                 case 2:
                     $view = self::$view . "_duo";
-                    if((isset($_SESSION["content"]) && $_SESSION["content"] == null) || !isset($_SESSION["content"])) {
+                    if ((isset($_SESSION["content"]) && $_SESSION["content"] == null) || !isset($_SESSION["content"])) {
                         $_SESSION["content"] = $this->checkDuo($_FILES["duoFileOne"], $_FILES["duoFileTwo"]);
                     }
                     $json = $_SESSION["content"];
@@ -64,12 +65,42 @@ class AnalysisController
                     $zip->close();
 
                     $json["content"] = json_decode(file_get_contents($extractPath . "/project/data.json"), true);
-                    $json["scoring"] = self::calculateRubricScore($json["content"]);
+                    $json["scoring"] = self::calculateRubricScore($json["content"], $extractPath);
                 }
 
                 $json["extra"]["thumbnailFormat"] = mime_content_type($extractPath . "/project/thumbnails/" . $json["content"]["thumbnail"]["md5"]);
                 $json["extra"]["thumbnailEncoded"] = base64_encode(file_get_contents($extractPath . "/project/thumbnails/" . $json["content"]["thumbnail"]["md5"]));
+                $json["extra"]["pageImages"] = [];
 
+
+                $spriteResult = self::getAllSpritesInProject($json["content"]["json"]);
+                $json["extra"]["characterCount"] = array_sum(array_map(function ($value) {
+                    return sizeof($value);
+                }, $spriteResult["pages"]));
+                $json["extra"]["characterImages"] = [];
+
+                foreach ($json["content"]["json"]["pages"] as $page) {
+                    $pagePath = isset($json["content"]["json"][$page]["md5"]) ?
+                        ($extractPath . "/project/backgrounds/" . $json["content"]["json"][$page]["md5"]) :
+                        (ROOT . "/assets/temp/private/backgrounds/DefaultWhite.svg");
+                    $json["extra"]["pageImages"][$page] = base64_encode(file_get_contents($pagePath));
+                    $json["extra"]["characterImages"][$page] = [];
+                    foreach ($json["content"]["json"][$page]["sprites"] as $sprite) {
+                        if ($json["content"]["json"][$page][$sprite]["type"] === "sprite") {
+                            $spritePath = file_exists($extractPath . "/project/characters/" . $json["content"]["json"][$page][$sprite]["md5"]) ?
+                                ($extractPath . "/project/characters/" . $json["content"]["json"][$page][$sprite]["md5"]) :
+                                (ROOT . "/assets/temp/private/sprites/" . $json["content"]["json"][$page][$sprite]["md5"]);
+                            $json["extra"]["characterImages"][$page][$sprite] = base64_encode(file_get_contents($spritePath));
+                        } else if ($json["content"]["json"][$page][$sprite]["type"] === "text") {
+                            $text = $json["content"]["json"][$page][$sprite]["str"];
+                            $color = $json["content"]["json"][$page][$sprite]["color"];
+                            $json["extra"]["characterImages"][$page][$sprite] = base64_encode('<svg height="200" width="200" xmlns="http://www.w3.org/2000/svg">
+                            <text text-anchor="middle" x="100" y="100" fill="'.$color.'" stroke="'.$color.'" font-size="20">'.htmlspecialchars($text).'</text>
+                            </svg>');
+                        }
+
+                    }
+                }
                 unlink($destinationPath);
                 self::rrmdir($extractPath);
 
@@ -100,7 +131,7 @@ class AnalysisController
     }
 
     private
-    static function calculateRubricScore($entry)
+    static function calculateRubricScore($entry, $extractPath)
     {
         $out = [];
         $out["programSyntaxLengthAmount"] = self::calculateProgramSyntaxLengthAmount($entry);
@@ -108,7 +139,7 @@ class AnalysisController
         $out["coordination"] = self::calculateCoordination($entry);
         $out["repeatNumberParameters"] = self::calculateRepeatNumberParameters($entry);
         $out["narrativeCohesion"] = ["categoryScore" => null];
-        $out["visualCustomization"] = self::calculateVisualCustomization($entry);
+        $out["visualCustomization"] = self::calculateVisualCustomization($entry, $extractPath);
         $out["programmedCustomization"] = self::calculateProgrammedCustomization($entry);
 
         $tempFinalScore = array_sum(array_map(function ($value) {
@@ -154,6 +185,34 @@ class AnalysisController
         return $out;
     }
 
+    private static function getAllSpritesInProject($json)
+    {
+        $out = [];
+        $out["pages"] = [];
+        foreach ($json["pages"] as $page) {
+            $out["pages"][$page] = [];
+            foreach ($json[$page]["sprites"] as $sprite) {
+                $out["pages"][$page][] = $json[$page][$sprite]["md5"] ?? $json[$page][$sprite]["text"] ?? null;
+            }
+        }
+        return $out;
+    }
+
+    private static function getAllCustomizedSpritesInProject($json)
+    {
+        $out = [];
+        $out["sprites"] = [];
+        $count = 0;
+        foreach ($json["pages"] as $page) {
+            $out["pages"][$page] = [];
+            foreach ($json[$page]["sprites"] as $sprite) {
+                $out["pages"][$page][] = $json[$page][$sprite]["md5"] ?? $json[$page][$sprite]["text"] ?? null;
+
+            }
+        }
+        return $out;
+    }
+
     private static function findBlockCategory($block)
     {
         foreach (BLOCKS as $category => $blocks) {
@@ -184,7 +243,7 @@ class AnalysisController
                                     $programAmount = $programAmount + 1;
                                 } else $correctscript = false;
                                 foreach ($script as $block) {
-                                    if ($block[0] == "repeat" && isset($block[4])) {
+                                    if ($block[0] === "repeat" && isset($block[4])) {
                                         foreach ($block[4] as $blockInRepeat) {
                                             if (!self::checkCorrectness($blockInRepeat, $json, $page, $sprite, $script, $pageBlocks)) $correctscript = false;
                                         }
@@ -236,7 +295,7 @@ class AnalysisController
                         if (isset($json[$page][$sprite]["scripts"])) {
                             foreach ($json[$page][$sprite]["scripts"] as $script) {
                                 foreach ($script as $block) {
-                                    if ($block[0] == "repeat" && isset($block[4])) {
+                                    if ($block[0] === "repeat" && isset($block[4])) {
                                         foreach ($block[4] as $blockInRepeat) {
                                             $category = self::findBlockCategory($blockInRepeat[0]);
                                             if (!isset($categories[$category])) {
@@ -361,7 +420,7 @@ class AnalysisController
                 foreach ($value as $sprite) {
                     $blocks = self::getAllBlocksOnSprite($sprite["character"]);
                     foreach ($blocks as $block) {
-                        if ($block[0] == "gotopage") {
+                        if ($block[0] === "gotopage") {
                             foreach ($characters[$json["pages"][$block[1] - 1]] as $sprite) {
                                 if ($sprite["hasStartFlag"]) return true;
                             }
@@ -410,22 +469,44 @@ class AnalysisController
     private
     static function calculateRepeatNumberParameters($entry)
     {
+        $nonDefaultBlockAmount = 0;
+        $usedRepeatForever = false;
+        $correctRepeatWithOneBlock = 0;
+        $correctRepeatWithMoreBlocks = 0;
+        $negativeOrZeroParameter = 0;
+        $correctNestedLoop = false;
 
         $json = $entry["json"];
         if (isset($json["pages"])) {
             foreach ($json["pages"] as $page) { //On each page
-
+                $pageBlocks = self::getAllBlocksOnPage($json[$page]);
                 if (isset($json[$page]["sprites"])) {
                     foreach ($json[$page]["sprites"] as $sprite) { //In each sprite
                         if (isset($json[$page][$sprite]["scripts"])) {
-                            //  foreach ($json[$page][$sprite]["scripts"] as $script) {
-                            //      if(isset($json[$page][$sprite][$script])) {
-                            //          $json[$page][$sprite][$script];
-                            //      }
-                            //  }
+                            foreach ($json[$page][$sprite]["scripts"] as $script) {
+                                foreach ($script as $block) {
+                                    if (!self::checkDefaults($block)) {
+                                        $nonDefaultBlockAmount++;
+                                    }
+                                    if (self::checkNegativeOrZero($block)) {
+                                        $negativeOrZeroParameter++;
+                                    }
+                                    if ($block[0] === "forever" && sizeof($script) > 1) $usedRepeatForever = true;
+                                    if ($block[0] === "repeat") {
+                                        if (self::checkCorrectness($block, $json, $page, $sprite, $script, $pageBlocks)) {
+                                            if (sizeof($block[4]) === 1) {
+                                                $correctRepeatWithOneBlock++;
+                                            } else if (sizeof($block[4]) > 1) {
+                                                $correctRepeatWithMoreBlocks++;
+                                            }
+                                        }
+                                    }
+                                    //TODO: Nested loops correctness
+
+                                }
+                            }
                         } else {
                         }
-
                     }
                 } else {
                 }
@@ -433,12 +514,49 @@ class AnalysisController
         } else {
         }
 
-        return ["categoryScore" => null];
+        $categoryScore = 0;
+
+        if ($negativeOrZeroParameter > 0) {
+            $categoryScore = 4;
+        } else if ($correctRepeatWithMoreBlocks > 0) {
+            $categoryScore = 3;
+        } else if ($correctRepeatWithOneBlock > 0 || $usedRepeatForever) {
+            $categoryScore = 2;
+        } else if ($nonDefaultBlockAmount > 0) {
+            $categoryScore = 1;
+        }
+
+        return [
+            'categoryScore' => $categoryScore,
+            'nonDefaultBlockAmount' => $nonDefaultBlockAmount,
+            'usedRepeatForever' => $usedRepeatForever,
+            'correctRepeatWithOneBlock' => $correctRepeatWithOneBlock,
+            'correctRepeatWithMoreBlocks' => $correctRepeatWithMoreBlocks,
+            'negativeOrZeroParameter' => $negativeOrZeroParameter
+        ];
     }
 
     private
-    static function calculateVisualCustomization($entry)
+    static function calculateVisualCustomization($entry, $extractPath)
     {
+
+        $customizedPages = [];
+
+        $backgroundsChanged = 0;
+        $json = $entry["json"];
+
+        if (isset($json["pages"])) {
+            foreach ($json["pages"] as $page) { //On each page
+                if(isset($json[$page]["md5"])){
+                    $backgroundsChanged++;
+                }
+            }
+        } else {
+        }
+
+        $changedCharacters = self::getAllCustomizedSpritesInProject($json); //All characters that aren't Cat.svg
+        $customizedCharacters = []; //Characters that involved the paint editor
+
         return ["categoryScore" => null];
     }
 
@@ -455,6 +573,7 @@ class AnalysisController
     private
     static function checkCorrectness($block, $project, $page, $sprite, $script, $blocksPerPage)
     {
+        $lastIndex = sizeof($script) - 1;
         if (in_array($block[0], array_merge(BLOCKS["green_sound"], BLOCKS["red_end"]))) {
             return true;
         } else if (in_array($block[0], BLOCKS["yellow_start"])) {
@@ -484,7 +603,6 @@ class AnalysisController
             return true;
         } else if (in_array($block[0], BLOCKS["orange_control"])) {
             if ($block[0] === "wait") {
-                $lastIndex = sizeof($script) - 1;
                 return $script[$lastIndex][0] === "endstack" || $script[$lastIndex] === $block[0];
             } else if ($block[0] === "stopmine") {
                 $presentBlocksNames = array_map(function ($value) {
@@ -492,11 +610,20 @@ class AnalysisController
                 }, self::getAllBlocksOnSprite($sprite));
                 return array_intersect($presentBlocksNames, BLOCKS["blue_motion"]) >= 1;
             } else if ($block[0] === "setspeed") {
-                return;
+                $currentSprite = $project[$page][$sprite];
+                return $currentSprite["speed"] !== $block[1];
             } else if ($block[0] === "repeat") {
-                return;
+                if ($block[4] === []) return false;
+                else if ($block[1] <= 0) return false;
+                else if (sizeof($script) === 2 && $script[$lastIndex]) return false;
+                else return true;
             }
         }
+    }
+
+    private
+    static function checkCorrectnessLoop($block, $project, $page, $sprite, $script, $blocksPerPage)
+    {
 
     }
 
@@ -507,6 +634,20 @@ class AnalysisController
         else {
             return true;
         }
+    }
+
+    private
+    static function checkDefaults($block)
+    {
+        if ($block[0] === "say") {
+            return in_array($block[1], DEFAULTSVALUES[$block[0]]);
+        } else return $block[1] === DEFAULTSVALUES[$block[0]];
+    }
+
+    private
+    static function checkNegativeOrZero($block)
+    {
+        return $block[1] <= 0;
     }
 }
 

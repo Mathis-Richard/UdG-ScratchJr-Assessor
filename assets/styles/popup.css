@@ -1,0 +1,79 @@
+.collapsibleContent {
+    display: none;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: var(--darkest);
+}
+
+.collapsible:hover {
+    cursor: help;
+}
+
+.collapsible.open:hover {
+    cursor: pointer;
+}
+
+.arrow {
+    display: inline-block;
+    transition: transform 0.3s ease;
+    font-size: xxx-large;
+}
+
+.collapsible.open .arrow {
+    transform: rotate(180deg);
+}
+
+.keyDefinitions, .scoringDetails {
+    font-size: smaller;
+}
+
+.startBlocks {
+    color: #FFE75A;
+}
+
+.motionBlocks {
+    color: #4B8CE3;
+}
+
+.looksBlocks {
+    color: #D38DD7;
+
+}
+
+.soundBlocks {
+    color: #48CC7E;
+
+}
+
+.controlBlocks {
+    color: #FFB255;
+}
+
+.endBlocks {
+    color: #EA2424;
+
+}
+
+.blocksList {
+    list-style-type: circle;
+}
+
+.scoreLevels li span.pointsZero {
+    color: var(--zero);
+}
+
+.scoreLevels li span.pointsOne {
+    color: var(--one);
+}
+
+.scoreLevels li span.pointsTwo {
+    color: var(--two);
+}
+
+.scoreLevels li span.pointsThree {
+    color: var(--three);
+}
+
+.scoreLevels li span.pointsFour {
+    color: var(--four);
+}

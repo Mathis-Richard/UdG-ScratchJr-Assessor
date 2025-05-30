@@ -1,13 +1,23 @@
 <div class="dataDiv">
-    <div class="imageDiv">
-        <img class="projectThumbnail" src="<?= 'data: '.$json[$index]["extra"]["thumbnailFormat"].';base64,'.$json[$index]["extra"]["thumbnailEncoded"];?>" />
+    <h2>Project <?php if($mode===2) echo ($index+1)?> Metadata</h2>
+    <div class="metaImageDiv">
+        <div class="metadataDiv">
+            <div class="metadataNameDiv"><p><u>Project name:</u><i><?= " \"" . htmlspecialchars($json[$index]["content"]["name"]) ?>"</i></p></div>
+            <div class="metadataCreationDiv"><p><u>Creation date:</u><?= " " . htmlspecialchars($json[$index]["content"]["ctime"]) ?></p></div>
+            <div class="metadataPageDiv">
+                <div class="metadataPageNumberDiv"><p><u>Number of pages:</u><?= " " . htmlspecialchars($json[$index]["content"]["thumbnail"]["pagecount"]) ?></p></div>
+                <div class="metadataPageNumberDiv"><p><u>Number of characters:</u><?= " " . htmlspecialchars($json[$index]["extra"]["characterCount"]) ?></p></div>
+            </div>
+        </div>
+        <div class="imageDiv">
+            <img class="projectThumbnail"
+                 src="<?= 'data: ' . htmlspecialchars($json[$index]["extra"]["thumbnailFormat"]) . ';base64,' . htmlspecialchars($json[$index]["extra"]["thumbnailEncoded"]); ?>"/>
+        </div>
     </div>
-    <h2><u>Project name:</u><i><?=" \"".$json[$index]["content"]["name"]?>"</i></h2>
-    <h4><u>Creation date:</u><?=" ".$json[$index]["content"]["ctime"]?></h4>
-    <h4><u>Number of pages:</u><?=" ".$json[$index]["content"]["thumbnail"]["pagecount"]?></h4>
+    <div class="pageImagesDiv"></div>
 </div>
+
 <div class="rubricDiv">
-    <p><i>N.B: Not all categories can be estimated by algorithms, so you can override any mark you don't agree with.</i></p>
-    <p>Progress is still being made with these algorithms, thanks for your patience!</p>
+    <h2>Project <?php if($mode===2) echo ($index+1)?> Scoring</h2>
     <?php require ROOT . "/views/layout/rubric.php"; ?>
 </div>

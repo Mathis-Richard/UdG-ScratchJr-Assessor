@@ -1,11 +1,32 @@
 #headerLogo {
-    max-height: 20vh;
-    padding: 1vw 1vh;
-    cursor: pointer;
+    display: block;
+    padding: 2vh 2vw;
+    margin: 0 2vw;
+    width: 15vw;
+    height: auto;
+    max-width: 100%;
 }
 
-body, header, footer {
-    font-family: "Lexend Deca", serif;
+@media (max-width: 768px) {
+    #headerLogo {
+        width: 20vw; /* Increase width slightly for smaller screens */
+    }
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+.flag {
+    width: 1em;
+    height: 1em;
+}
+
+* {
+    font-family: "Lexend Deca", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
 }
 
 header, footer {
@@ -14,57 +35,95 @@ header, footer {
     padding: 1vh 1vw;
     display: flex;
     width: 100%;
-    background-color: var(--darkest);
+    background-color: var(--dark);
+    border: 2px solid var(--darkest);
 }
 
 header {
-    margin: 0 0 10vh;
+    margin: 0 0 auto;
+    margin-bottom: 5vh;
+    border-top: none;
 }
 
 footer {
-    margin: 10vh 0 0;
+    margin: auto 0 0;
+    border-bottom: none;
+    align-items: center;
 }
 
 body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: var(--dark);
-    color: var(--normal-text);
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    font-size: x-large;
+    background-color: var(--light);
+    color: var(--lightest-alt);
+}
+
+header>div {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.preMainDiv {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 90%;
 }
 
 .mainDiv {
     display: flex;
     flex-direction: column;
-    width: 80%;
-    padding: 0vh 3vw;
+    margin: 4vh 0;
+    width: 90%;
+    flex-grow: 0;
+    justify-content: center;
+    align-items: center;
+}
+
+.mainDiv h1 {
+    font-weight: 600;
 }
 
 .twoProjectsDiv {
     display: flex;
     flex-direction: row;
+    font-size: small;
     width: 100%;
+    align-items: flex-start;
+    justify-content: space-around;
 }
 
 .twoProjectsDiv .projectOneDiv, .twoProjectsDiv .projectTwoDiv {
     display: flex;
     flex-direction: column;
-    padding: 2em;
-    width: 50%;
+    flex-wrap: wrap;
+    padding: 2vh 0;
+    width: 45%;
+    height: 100%;
+}
+
+#sjrFormsDiv .fileFormDiv:last-child {
+    margin-bottom: 15vh;
 }
 
 .fileFormDiv {
     display: flex;
-    border: 2px solid black;
+    border: 2px solid var(--darkest);
     border-radius: 8px;
-    margin: 1rem;
+    margin: 3vh 0;
 }
 
 .fileFormDiv > form {
     display: flex;
     width: 100%;
     flex-direction: column;
-    padding: 1rem;
+    padding: 1vh 1vw;
 }
 
 .fileFormDiv > form input {
@@ -80,12 +139,13 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0.5rem;
-    border: 2px solid black;
+    padding: 1rem;
+    border: 2px solid var(--darkest);
     border-radius: 8px;
-    margin: 0.5rem;
+    background-color: var(--dark);
+    margin: 1rem;
     height: auto;
-    width: 13rem;
+    width: 20%;
 }
 
 .fileFormDiv > form label.hidden {
@@ -97,9 +157,10 @@ body {
     width: 100%;
 }
 
+
 .fileFormDiv > form label:hover {
     cursor: pointer;
-    background-color: darkgray;
+    background-color: var(--darkest);
 }
 
 .fileFormDiv > form div.labelDiv {
@@ -125,6 +186,10 @@ body {
     width: 5%;
 }
 
+.svgForm, .sjrForm {
+    background-color: var(--regular);
+}
+
 .error {
     color: var(--error);
 }
@@ -137,13 +202,107 @@ body {
     display: none;
 }
 
-.dataDiv > .imageDiv {
+.rubricInstructionsDiv .rubricInstructionsHeadDiv {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+}
+
+.rubricInstructionsDiv .rubricInstructionsHeadDiv>h2 {
+    font-style: italic;
+}
+
+.rubricInstructionsDiv .rubricInstructionsHeadDiv>h2 {
+    font-style: italic;
+}
+
+.dataDiv, .rubricInstructionsDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: var(--regular);
+    width: 100%;
+    padding: 3vh 3vw;
+    border-radius: 8px;
+    margin-bottom: 5vh;
+    border: 2px solid var(--darkest);
+}
+
+.dataDiv > .metaImageDiv {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    flex-wrap: nowrap;
+    justify-content: center;
+}
+
+.dataDiv > .metaImageDiv > .imageDiv {
     display: flex;
     justify-content: center;
-    width: 100%;
+    width: 50%;
+}
+
+.dataDiv > .metaImageDiv > .metadataDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 50%;
 }
 
 form p.error:before {
     content: "\26A0";
     margin-right: 6px;
+}
+
+.twoProjectsDiv .dataDiv {
+    width: auto;
+}
+
+.twoProjectsDiv .rubricDiv {
+    width: auto;
+}
+
+.headlinerTwo {
+    border-top: 3px dashed var(--darkest);
+}
+
+.separator {
+    height: 100%;
+    border: 2px dashed var(--darkest);
+}
+
+#breadcrumb {
+    margin: 1rem 0;
+}
+
+#breadcrumb a {
+    text-decoration: none;
+    color: var(--darkest);
+}
+
+#breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+#breadcrumb a::before {
+    content: "\2302";
+    margin-right: 0.5rem;
+}
+
+.projectThumbnail {
+    width: 70%;
+    display: block;
+    border-radius: 8px;
+    border: 2px solid var(--darkest);
+}
+
+#sjrFormsDiv, #svgFormDiv  {
+    width: 100%;
+}
+
+strong {
+    font-weight: bolder;
 }

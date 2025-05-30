@@ -1,12 +1,13 @@
 <div class="mainDiv">
-    <div>
-        <h1>Improve your ScratchJr experience.</h1>
+    <div class="headlinerOne">
+        <h1>More tools for your ScratchJr needs.</h1>
     </div>
 
-    <div>
+    <div class="headlinerTwo">
         <h2><i>Analyze or grade your .sjr files</i></h2>
     </div>
 
+    <div id="sjrFormsDiv">
     <div id="soloFormDiv" class="fileFormDiv">
         <form id="soloForm" class="sjrForm" action="analysis" method="post" enctype="multipart/form-data">
             <div>
@@ -57,8 +58,9 @@
             </div>
         </form>
     </div>
+    </div>
 
-    <div>
+    <div class="headlinerTwo">
         <h2><i>Make your own character the star of the show</i></h2>
     </div>
 

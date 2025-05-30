@@ -15,6 +15,7 @@ $(function () {
     let visualCustomizationOne = $(".projectOneDiv .visualCustomization");
     let programmedCustomizationOne = $(".projectOneDiv .programmedCustomization");
     let totalScoreOne = $(".projectOneDiv .totalScore");
+    let pageImagesDivOne = $(".projectOneDiv .pageImagesDiv");
 
     let programSyntaxLengthAmountTwo = $(".projectTwoDiv .programSyntaxLengthAmount");
     let varietyOfBlocksTwo = $(".projectTwoDiv .varietyOfBlocks");
@@ -24,6 +25,7 @@ $(function () {
     let visualCustomizationTwo = $(".projectTwoDiv .visualCustomization");
     let programmedCustomizationTwo = $(".projectTwoDiv .programmedCustomization");
     let totalScoreTwo = $(".projectTwoDiv .totalScore");
+    let pageImagesDivTwo = $(".projectTwoDiv .pageImagesDiv");
 
     let categoriesOne = {
         "programSyntaxLengthAmount": programSyntaxLengthAmountOne,
@@ -96,71 +98,139 @@ $(function () {
 
     function findLevel(categoriesScores) {
         let score = sumScore(categoriesScores);
-        console.log(score)
         if (22 <= score && score <= 28) {
-            return "Distinguished"
+            return ["Distinguished", "pointsFour"]
         } else if (15 <= score && score <= 21) {
-            return "Advanced"
+            return ["Advanced", "pointsThree"]
         } else if (8 <= score && score <= 14) {
-            return "Proficient"
+            return ["Proficient", "pointsTwo"]
         } else if (2 <= score && score <= 7) {
-            return "Developing"
+            return ["Developing", "pointsOne"]
         } else if (0 <= score) {
-            return "Budding"
+            return ["Budding", "pointsZero"]
         } else {
-            return "Error"
+            return ["Error"]
         }
     }
 
-    function addEventListenersToCategory(categoryElement, categoriesScores, reverseCategories, totalScore) {
+
+    for (let category of Object.keys(categoriesOne)) {
+        let score = dataA["scoring"][category]["categoryScore"]
+        categoriesScoresOne[category] = score;
+        if (categoriesOne[category] !== undefined) {
+            let targetCategory = categoriesOne[category].children(".tableRowContent");
+            let categoryCells = targetCategory.children();
+            categoryCells.eq(score).addClass("selected");
+        }
+    }
+
+    for (let category of Object.keys(categoriesTwo)) {
+        let score = dataB["scoring"][category]["categoryScore"]
+        categoriesScoresTwo[category] = score;
+        if (categoriesTwo[category] !== undefined) {
+            let targetCategory = categoriesTwo[category].children(".tableRowContent");
+            let categoryCells = targetCategory.children();
+            categoryCells.eq(score).addClass("selected");
+        }
+    }
+
+    function addEventListenersToCategory(categoryElement, categoriesScores, reverseCategories, totalScore, categories) {
+        updateRubric(categoryElement, categoriesScores, reverseCategories, totalScore, categories);
+    }
+
+    function updateRubric(categoryElement, categoriesScores, reverseCategories, totalScore, categories) {
         let allCells = categoryElement.find(".tableRowContentCell");
         allCells.on("click", function () {
             let value = $(this).index();
             let categoryText = reverseCategories.get(categoryElement);
             categoriesScores[categoryText] = value;
-
-            totalScore.find('.scoreSectionDiv .textScore').text(sumScore(categoriesScores));
-            totalScore.find('.projectLevelSectionDiv .textLevelName').text(findLevel(categoriesScores));
+            let score = sumScore(categoriesScores);
+            let level = findLevel(categoriesScores);
+            totalScore.find('.scoreSectionDiv .textScore').text(score);
+            totalScore.find('.projectLevelSectionDiv .textLevelName').text(level[0]).removeClass("pointsZero pointsOne pointsTwo pointsThree pointsFour").addClass(level[1]);
+            totalScore.find('.scoreSectionDiv .textScore').removeClass("pointsZero pointsOne pointsTwo pointsThree pointsFour").addClass(level[1]);
             allCells.not(this).removeClass("selected");
             $(this).addClass("selected");
         });
     }
 
-    function initializeScores(categories, categoriesScores, data) {
-        for (let category of Object.keys(categories)) {
-            let score = data["scoring"][category]["categoryScore"]
-            categoriesScores[category] = score;
-            if (categories[category] !== undefined) {
-                let targetCategory = categories[category].children(".tableRowContent");
-                let categoryCells = targetCategory.children();
-                categoryCells.eq(score).addClass("selected");
-            }
+    addEventListenersToCategory(programSyntaxLengthAmountOne, categoriesScoresOne, reverseCategoriesOne, totalScoreOne, categoriesOne);
+    addEventListenersToCategory(varietyOfBlocksOne, categoriesScoresOne, reverseCategoriesOne, totalScoreOne, categoriesOne);
+    addEventListenersToCategory(coordinationOne, categoriesScoresOne, reverseCategoriesOne, totalScoreOne, categoriesOne);
+    addEventListenersToCategory(repeatNumberParametersOne, categoriesScoresOne, reverseCategoriesOne, totalScoreOne, categoriesOne);
+    addEventListenersToCategory(narrativeCohesionOne, categoriesScoresOne, reverseCategoriesOne, totalScoreOne, categoriesOne);
+    addEventListenersToCategory(visualCustomizationOne, categoriesScoresOne, reverseCategoriesOne, totalScoreOne, categoriesOne);
+    addEventListenersToCategory(programmedCustomizationOne, categoriesScoresOne, reverseCategoriesOne, totalScoreOne, categoriesOne);
+
+    addEventListenersToCategory(programSyntaxLengthAmountTwo, categoriesScoresTwo, reverseCategoriesTwo, totalScoreTwo, categoriesTwo);
+    addEventListenersToCategory(varietyOfBlocksTwo, categoriesScoresTwo, reverseCategoriesTwo, totalScoreTwo, categoriesTwo);
+    addEventListenersToCategory(coordinationTwo, categoriesScoresTwo, reverseCategoriesTwo, totalScoreTwo, categoriesTwo);
+    addEventListenersToCategory(repeatNumberParametersTwo, categoriesScoresTwo, reverseCategoriesTwo, totalScoreTwo, categoriesTwo);
+    addEventListenersToCategory(narrativeCohesionTwo, categoriesScoresTwo, reverseCategoriesTwo, totalScoreTwo, categoriesTwo);
+    addEventListenersToCategory(visualCustomizationTwo, categoriesScoresTwo, reverseCategoriesTwo, totalScoreTwo, categoriesTwo);
+    addEventListenersToCategory(programmedCustomizationTwo, categoriesScoresTwo, reverseCategoriesTwo, totalScoreTwo, categoriesTwo);
+
+    let pageImagesOne = dataA.extra.pageImages;
+    let characterImagesOne = dataA.extra.characterImages;
+
+    for (let page in pageImagesOne) {
+        let pageDiv = $(`<div class="pageAndCharacterDiv"></div>`);
+
+        let pageNameAndImageDiv = $('<div class="pageNameAndImageDiv"></div>')
+
+        pageNameAndImageDiv.append(`<img class="pageImage" src="data:image/svg+xml;base64,${pageImagesOne[page]}" alt="Page Image">`);
+        pageNameAndImageDiv.append(`<p>${page}</p>`);
+        pageDiv.append(pageNameAndImageDiv);
+
+        let charactersDiv = $('<div class="charactersDiv"></div>');
+
+        for (let character in characterImagesOne[page]) {
+            let characterDiv = $(`<div class="characterDiv"></div>`)
+            characterDiv.append(`<img class="characterImage" src="data:image/svg+xml;base64,${characterImagesOne[page][character]}" alt="Character Image">`).append(`<p class="characterName">${character}</p>`);
+            charactersDiv.append(characterDiv);
         }
+
+        pageDiv.append(charactersDiv);
+
+        pageImagesDivOne.append(pageDiv);
     }
 
-    addEventListenersToCategory(programSyntaxLengthAmountOne, categoriesScoresOne, reverseCategoriesOne, totalScoreOne);
-    addEventListenersToCategory(varietyOfBlocksOne, categoriesScoresOne, reverseCategoriesOne, totalScoreOne);
-    addEventListenersToCategory(coordinationOne, categoriesScoresOne, reverseCategoriesOne, totalScoreOne);
-    addEventListenersToCategory(repeatNumberParametersOne, categoriesScoresOne, reverseCategoriesOne, totalScoreOne);
-    addEventListenersToCategory(narrativeCohesionOne, categoriesScoresOne, reverseCategoriesOne, totalScoreOne);
-    addEventListenersToCategory(visualCustomizationOne, categoriesScoresOne, reverseCategoriesOne, totalScoreOne);
-    addEventListenersToCategory(programmedCustomizationOne, categoriesScoresOne, reverseCategoriesOne, totalScoreOne);
+    let pageImagesTwo = dataB.extra.pageImages;
+    let characterImagesTwo = dataB.extra.characterImages;
 
-    addEventListenersToCategory(programSyntaxLengthAmountTwo, categoriesScoresTwo, reverseCategoriesTwo, totalScoreTwo);
-    addEventListenersToCategory(varietyOfBlocksTwo, categoriesScoresTwo, reverseCategoriesTwo, totalScoreTwo);
-    addEventListenersToCategory(coordinationTwo, categoriesScoresTwo, reverseCategoriesTwo, totalScoreTwo);
-    addEventListenersToCategory(repeatNumberParametersTwo, categoriesScoresTwo, reverseCategoriesTwo, totalScoreTwo);
-    addEventListenersToCategory(narrativeCohesionTwo, categoriesScoresTwo, reverseCategoriesTwo, totalScoreTwo);
-    addEventListenersToCategory(visualCustomizationTwo, categoriesScoresTwo, reverseCategoriesTwo, totalScoreTwo);
-    addEventListenersToCategory(programmedCustomizationTwo, categoriesScoresTwo, reverseCategoriesTwo, totalScoreTwo);
+    for (let page in pageImagesTwo) {
+        let pageDiv = $(`<div class="pageAndCharacterDiv"></div>`);
 
-    initializeScores(categoriesOne, categoriesScoresOne, dataA);
-    initializeScores(categoriesTwo, categoriesScoresTwo, dataB);
+        let pageNameAndImageDiv = $('<div class="pageNameAndImageDiv"></div>')
 
-    totalScoreOne.find('.scoreSectionDiv .textScore').text(sumScore(categoriesScoresOne))
-    totalScoreOne.find('.projectLevelSectionDiv .textLevelName').text(findLevel(categoriesScoresOne))
+        pageNameAndImageDiv.append(`<img class="pageImage" src="data:image/svg+xml;base64,${pageImagesTwo[page]}" alt="Page Image">`);
+        pageNameAndImageDiv.append(`<p>${page}</p>`);
+        pageDiv.append(pageNameAndImageDiv);
 
-    totalScoreTwo.find('.scoreSectionDiv .textScore').text(sumScore(categoriesScoresTwo))
-    totalScoreTwo.find('.projectLevelSectionDiv .textLevelName').text(findLevel(categoriesScoresTwo))
+        let charactersDiv = $('<div class="charactersDiv"></div>');
 
+        for (let character in characterImagesTwo[page]) {
+            let characterDiv = $(`<div class="characterDiv"></div>`)
+            characterDiv.append(`<img class="characterImage" src="data:image/svg+xml;base64,${characterImagesTwo[page][character]}" alt="Character Image">`).append(`<p class="characterName">${character}</p>`);
+            charactersDiv.append(characterDiv);
+        }
+
+        pageDiv.append(charactersDiv);
+
+        pageImagesDivTwo.append(pageDiv);
+    }
+
+    updateRubric(programSyntaxLengthAmountOne, categoriesScoresOne, reverseCategoriesOne, totalScoreOne, categoriesOne);
+    updateRubric(varietyOfBlocksOne, categoriesScoresOne, reverseCategoriesOne, totalScoreOne, categoriesOne);
+    updateRubric(coordinationOne, categoriesScoresOne, reverseCategoriesOne, totalScoreOne, categoriesOne);
+    updateRubric(repeatNumberParametersOne, categoriesScoresOne, reverseCategoriesOne, totalScoreOne, categoriesOne);
+    updateRubric(visualCustomizationOne, categoriesScoresOne, reverseCategoriesOne, totalScoreOne, categoriesOne);
+    updateRubric(programmedCustomizationOne, categoriesScoresOne, reverseCategoriesOne, totalScoreOne, categoriesOne);
+
+    updateRubric(programSyntaxLengthAmountTwo, categoriesScoresTwo, reverseCategoriesTwo, totalScoreTwo, categoriesTwo);
+    updateRubric(varietyOfBlocksTwo, categoriesScoresTwo, reverseCategoriesTwo, totalScoreTwo, categoriesTwo);
+    updateRubric(coordinationTwo, categoriesScoresTwo, reverseCategoriesTwo, totalScoreTwo, categoriesTwo);
+    updateRubric(repeatNumberParametersTwo, categoriesScoresTwo, reverseCategoriesTwo, totalScoreTwo, categoriesTwo);
+    updateRubric(visualCustomizationTwo, categoriesScoresTwo, reverseCategoriesTwo, totalScoreTwo, categoriesTwo);
+    updateRubric(programmedCustomizationTwo, categoriesScoresTwo, reverseCategoriesTwo, totalScoreTwo, categoriesTwo);
 })

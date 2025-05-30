@@ -2,7 +2,16 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    width: 100%;
+    padding: 3vh 3vw;
+    border-radius: 8px;
+    border: 2px solid var(--darkest);
+    background-color: var(--regular);
+    color: var(--light-alt);
+}
+
+.rubricDiv>h2 {
+    color: var(--lightest-alt);
 }
 
 .rubricTable {
@@ -11,6 +20,7 @@
     display: flex;
     flex-direction: column;
     width: 100%;
+    box-sizing: border-box;
 }
 
 .tableHead, .tableFoot {
@@ -36,34 +46,36 @@
     display: flex;
     justify-content: center;
     font-weight: bolder;
+    text-transform: uppercase;
     min-height: 2rem;
     width: 100%;
+    padding: 0.5rem;
+    text-align: center;
+    background-color: var(--dark);
 }
 
-.tableHeadTitle, .tableFootTitle {
-    background-color: var(--darkest-alt);
-}
-
-.tableRowTitle, .tableFootTitle {
+.tableRowTitle {
+    color: #1c1c1c;
     display: flex;
-    width: 40%;
-    padding: 0.5vw;
-    align-items: center;
+    width: 80%;
+    padding: 0.5vh 0.5vw;
+    align-items: flex-start;
+    justify-content: center;
 }
 
-.tableRowContent, .tableFootContent {
+.tableRowContent {
     font-weight: bold;
     display: flex;
     flex-direction: row;
-    width: 60%;
+    width: 30%;
     text-align: center;
 }
 
-.tableFootContent {
-    font-weight: bold;
+.tableRowContent > .tableRowContentCell {
+    width: 100%;
 }
 
-.tableRowContent > .tableRowContentCell {
+.tableFootContent {
     width: 100%;
 }
 
@@ -71,7 +83,7 @@
     display: flex;
     flex-direction: row;
     width: 100%;
-    background-color: var(--regular-alt);
+    background-color: var(--dark);
 }
 
 .tableFootContent > .tableRowContentCell > div {
@@ -85,8 +97,17 @@
     padding: 0 0.2vw;
 }
 
+.tableBody .tableRow div.tableRowContentCell {
+    width: inherit;
+    font-weight: 700;
+}
+
+.tableBody .tableRow div.tableRowContentCell.selected {
+    font-weight: 900;
+}
+
 .tableBody .tableRow div.tableRowContentCell.pointsZero {
-    color: red;
+    color: var(--zero);
     cursor: pointer;
     -webkit-transition: all 0.1s linear;
     -moz-transition: all 0.1s linear;
@@ -95,7 +116,7 @@
 }
 
 .tableBody .tableRow div.tableRowContentCell.pointsOne {
-    color: orange;
+    color: var(--one);
     cursor: pointer;
     -webkit-transition: all 0.1s linear;
     -moz-transition: all 0.1s linear;
@@ -104,7 +125,7 @@
 }
 
 .tableBody .tableRow div.tableRowContentCell.pointsTwo {
-    color: yellow;
+    color: var(--two);
     cursor: pointer;
     -webkit-transition: all 0.1s linear;
     -moz-transition: all 0.1s linear;
@@ -113,7 +134,7 @@
 }
 
 .tableBody .tableRow div.tableRowContentCell.pointsThree {
-    color: greenyellow;
+    color: var(--three);
     cursor: pointer;
     -webkit-transition: all 0.1s linear;
     -moz-transition: all 0.1s linear;
@@ -122,7 +143,7 @@
 }
 
 .tableBody .tableRow div.tableRowContentCell.pointsFour {
-    color: green;
+    color: var(--four);
     cursor: pointer;
     -webkit-transition: all 0.1s linear;
     -moz-transition: all 0.1s linear;
@@ -131,8 +152,8 @@
 }
 
 .tableBody .tableRow div.tableRowContentCell.pointsZero.selected {
-    color: black;
-    background-color: red;
+    color: #1c1c1c;
+    background-color: var(--zero);
     cursor: initial;
     -webkit-transition: all 0.1s linear;
     -moz-transition: all 0.1s linear;
@@ -141,8 +162,8 @@
 }
 
 .tableBody .tableRow div.tableRowContentCell.pointsOne.selected {
-    color: black;
-    background-color: orange;
+    color: #1c1c1c;
+    background-color: var(--one);
     cursor: initial;
     -webkit-transition: all 0.1s linear;
     -moz-transition: all 0.1s linear;
@@ -151,8 +172,8 @@
 }
 
 .tableBody .tableRow div.tableRowContentCell.pointsTwo.selected {
-    color: black;
-    background-color: yellow;
+    color: #1c1c1c;
+    background-color: var(--two);
     cursor: initial;
     -webkit-transition: all 0.1s linear;
     -moz-transition: all 0.1s linear;
@@ -161,8 +182,8 @@
 }
 
 .tableBody .tableRow div.tableRowContentCell.pointsThree.selected {
-    color: black;
-    background-color: greenyellow;
+    color: #1c1c1c;
+    background-color: var(--three);
     cursor: initial;
     -webkit-transition: all 0.1s linear;
     -moz-transition: all 0.1s linear;
@@ -171,8 +192,8 @@
 }
 
 .tableBody .tableRow div.tableRowContentCell.pointsFour.selected {
-    color: black;
-    background-color: green;
+    color: #1c1c1c;
+    background-color: var(--four);
     cursor: initial;
     -webkit-transition: all 0.1s linear;
     -moz-transition: all 0.1s linear;
@@ -181,10 +202,9 @@
 }
 
 
-.rubricTable, .tableHead, .tableBody, .tableRow, .tableHeadTitle, .tableRowTitle, .tableFootTitle, .tableFootContent, .tableRowContent, .tableRowContentCell {
+.tableHead, .tableBody, .tableRow, .tableHeadTitle, .tableRowTitle, .tableFootTitle, .tableFootContent, .tableRowContent, .tableRowContentCell {
     border: 1px solid #1c1c1c;
     box-sizing: border-box;
-    color: #000000;
 }
 
 .tableRowContentCell {
@@ -197,12 +217,9 @@
     text-align: center;
 }
 
-.tableBody .tableRow:nth-of-type(odd) .tableRowTitle, .tableBody .tableRow:nth-of-type(odd) .tableRowContentCell{
-    background-color: darkgray;
-}
-
-.tableBody .tableRow:nth-of-type(even) .tableRowTitle, .tableBody .tableRow:nth-of-type(even) .tableRowContentCell{
-    background-color: gray;
+.tableBody .tableRow .tableRowTitle, .tableBody .tableRow .tableRowContentCell {
+    background-color: whitesmoke;
+    flex-direction: column;
 }
 
 .tableFoot .tableRow {
@@ -213,6 +230,119 @@
     text-transform: uppercase;
 }
 
-.tableFoot .tableRowContentCell {
-    background-color: var(--regular-alt);
+.textLevelName, .textScore {
+    font-weight: 800;
 }
+
+.tableRowContentCell > div {
+    font-weight: bold;
+    font-size: x-large;
+}
+
+.tableRowContentCell > div .textScore {
+    font-weight: 800;
+}
+
+.tableRowContentCell > div *.pointsZero {
+    color: var(--zero)
+}
+
+.tableRowContentCell > div *.pointsOne {
+    color: var(--one)
+}
+
+.tableRowContentCell > div *.pointsTwo {
+    color: var(--two)
+}
+
+.tableRowContentCell > div *.pointsThree {
+    color: var(--three)
+}
+
+.tableRowContentCell > div *.pointsFour {
+    color: var(--four)
+}
+
+.metadataDiv > div {
+    display: flex;
+    flex-direction: column;
+}
+
+.pageImagesDiv {
+    display: flex;
+    flex-direction: column;
+    border: 2px solid var(--darkest);
+    border-radius: 8px;
+    background-color: var(--dark);
+    margin: 3vh 0;
+    padding: 1vh 1vw;
+}
+
+.pageImagesDiv .pageAndCharacterDiv {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.pageImagesDiv .pageAndCharacterDiv .pageNameAndImageDiv img.pageImage {
+    width: 70%;
+    max-width: 200px;
+    border: 2px solid var(--darkest);
+    border-radius: 8px;
+}
+
+.pageImagesDiv .pageAndCharacterDiv .charactersDiv {
+    display: flex;
+    padding: 2vh 1vw;
+    margin: 2vh 0;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-content: flex-start;
+    border: 2px solid var(--darkest);
+    border-radius: 8px;
+    width: 70%;
+}
+
+.pageImagesDiv .pageAndCharacterDiv .pageNameAndImageDiv {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 50%;
+    justify-content: space-evenly;
+}
+
+.pageImagesDiv .pageAndCharacterDiv .pageNameAndImageDiv > p {
+    width: 50%;
+    font-size: smaller;
+    text-align: center;
+}
+
+.pageImagesDiv .pageAndCharacterDiv .charactersDiv img.characterImage {
+    width: 100%;
+    max-width: 70px;
+    height: 100%;
+    max-height: 100px;
+}
+
+.pageImagesDiv .pageAndCharacterDiv .charactersDiv>.characterDiv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: x-small;
+}
+
+.scoreSectionDiv, .projectLevelSectionDiv {
+    color: var(--lightest-alt);
+}
+
+.manualMarkMessage {
+    font-style: italic;
+    font-size: smaller;
+    color: var(--light-alt);
+}
+
+
+

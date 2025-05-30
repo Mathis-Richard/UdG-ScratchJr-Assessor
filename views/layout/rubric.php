@@ -1,6 +1,6 @@
 <div class="rubricTable">
     <div class="tableHead">
-        <div class="tableHeadTitle">Category Score</div>
+        <div class="tableHeadTitle">Rubric Score</div>
     </div>
     <div class="tableBody">
         <div class="tableRow programSyntaxLengthAmount">
@@ -44,7 +44,7 @@
             </div>
         </div>
         <div class="tableRow narrativeCohesion">
-            <div class="tableRowTitle">Visual Customization</div>
+            <div class="tableRowTitle">Narrative and Cohesion</div>
             <div class="tableRowContent">
                 <div class="tableRowContentCell pointsZero">0</div>
                 <div class="tableRowContentCell pointsOne">1</div>
@@ -54,7 +54,7 @@
             </div>
         </div>
         <div class="tableRow visualCustomization">
-            <div class="tableRowTitle">Narative and Cohesion</div>
+            <div class="tableRowTitle">Visual Customization</div>
             <div class="tableRowContent">
                 <div class="tableRowContentCell pointsZero">0</div>
                 <div class="tableRowContentCell pointsOne">1</div>
@@ -76,15 +76,15 @@
     </div>
     <div class="tableFoot">
         <div class="tableRow totalScore">
-            <div class="tableFootTitle">Total Score</div>
             <div class="tableFootContent">
                 <div class="tableRowContentCell">
                     <div class="scoreSectionDiv">
                         <p class="textScore">...</p>
-                        <p class="textTotalPossibleScore">out of 28</p>
+                        <p class="textScoreSeparator"> / </p>
+                        <p class="textTotalPossibleScore">28</p>
                     </div>
                     <div class="projectLevelSectionDiv">
-                        <p class="textPreLevelNamePre">Level</p>
+                        <p class="textPreLevelNamePre">Your skills are</p>
                         <p class="textLevelName">...</p>
                         <p>!</p>
                     </div>

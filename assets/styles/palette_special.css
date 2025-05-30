@@ -1,15 +1,15 @@
 :root {
-    --darkest: #3373cc;
+    --darkest: #275ba8;
     --dark: #3a80e7;
     --regular: #488ef0;
-    --light: #7da6e1;
-    --lighter: #c7eafb;
+    --light: #6b9edf;
+    --lightest: #b8daf5;
 
-    --darkest-alt: #d36a10;
-    --dark-alt: #e97e00;
-    --regular-alt: #f9a737;
-    --light-alt: #e8b369;
-    --lighter-alt: #efe6d1;
+    --darkest-alt: #b3540d;
+    --dark-alt: #db7000;
+    --regular-alt: #e89633;
+    --light-alt: #d6a458;
+    --lightest-alt: #f2e2c2;
 
     --normal-text: #ffffff;
 
